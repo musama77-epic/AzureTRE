@@ -3,7 +3,7 @@ import { getTheme, Icon, mergeStyles, Stack } from '@fluentui/react';
 import { Link } from 'react-router-dom';
 import { UserMenu } from './UserMenu';
 import { NotificationPanel } from './notifications/NotificationPanel';
-
+import CustomImage from '../../assets/favicon.png'
 export const TopNav: React.FunctionComponent = () => {
   return (
     <>
@@ -11,8 +11,8 @@ export const TopNav: React.FunctionComponent = () => {
         <Stack horizontal>
           <Stack.Item grow={100}>
             <Link to='/' className='tre-home-link'>
-              <Icon iconName="TestBeakerSolid" style={{ marginLeft: '10px', marginRight: '10px', verticalAlign: 'middle' }} />
-              <h5 style={{display: 'inline'}}>Azure TRE</h5>
+              <img src={CustomImage} alt="Custom Image" style={{ marginLeft: '10px', marginRight: '10px', verticalAlign: 'middle',width:'50px',height: '50px' }} />
+              <h5 style={{display: 'inline'}}>SYNDESIS TRE</h5>
             </Link>
           </Stack.Item>
           <Stack.Item>

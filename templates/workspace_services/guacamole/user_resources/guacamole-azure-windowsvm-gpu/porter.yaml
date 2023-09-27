@@ -1,8 +1,8 @@
 ---
 schemaVersion: 1.0.0
-name: tre-service-guacamole-linuxvm
-version: 0.7.0
-description: "An Azure TRE User Resource Template for Guacamole (Linux)"
+name: tre-service-guacamole-windowsvm
+version: 0.9.4
+description: "An Azure TRE User Resource Template for Guacamole (Windows 10)"
 dockerfile: Dockerfile.tmpl
 registry: azuretre
 
@@ -14,27 +14,34 @@ custom:
     "8 CPU | 32GB RAM": Standard_D8s_v5
     "16 CPU | 64GB RAM": Standard_D16s_v5
   image_options:
-    "Ubuntu 18.04":
+    "Windows 10":
       source_image_reference:
-        publisher: canonical
-        offer: ubuntuserver
-        sku: 18_04-lts-gen2
+        publisher: MicrosoftWindowsDesktop
+        offer: Windows-10
+        sku: win10-21h2-pro-g2
         version: latest
-      install_ui: true
       conda_config: false
-    "Ubuntu 18.04 Data Science VM":
+    "Windows 11":
+      source_image_reference:
+        publisher: microsoftwindowsdesktop
+        offer: windows-11
+        sku: win11-21h2-pro
+        version: latest
+      conda_config: false
+    "Server 2019 Data Science VM":
       source_image_reference:
         publisher: microsoft-dsvm
-        offer: ubuntu-1804
-        sku: 1804-gen2
+        offer: dsvm-win-2019
+        sku: winserver-2019
         version: latest
-      install_ui: false
       conda_config: true
-    "trelinuximage":
-      source_image_name: trelinuximage
+    "windows10image":
+      source_image_name: windows10image
+      conda_config: false
+    "trewindowsgeneralizedimg":
+      source_image_name: trewindowsgeneralizedimg
       install_ui: true
-      conda_config: true
-
+      conda_config: false
 credentials:
   - name: azure_tenant_id
     env: ARM_TENANT_ID
@@ -50,10 +57,6 @@ parameters:
     type: string
   - name: tre_id
     type: string
-  - name: azure_environment
-    type: string
-    default: "AzureCloud"
-    description: "Used by Azure CLI to set the Azure environment"
   - name: parent_service_id
     type: string
     description: "Resource group containing the shared ACR"
@@ -62,11 +65,13 @@ parameters:
     type: string
     description: Azure resource ID for the compute image gallery to pull images from (if specifying custom images by name)
     default: "/subscriptions/920fd064-9882-4c91-a151-6f576e5ae002/resourceGroups/rg-syndepic-ws-8e0a/providers/Microsoft.Compute/galleries/image_test"
-
-  # the following are added automatically by the resource processor
   - name: id
     type: string
     description: "An Id for this installation"
+  - name: azure_environment
+    type: string
+    default: "AzureCloud"
+    description: "Used by Azure CLI to set the Azure environment"
     env: id
   - name: tfstate_resource_group_name
     type: string
@@ -83,13 +88,9 @@ parameters:
     env: ARM_USE_MSI
     type: boolean
     default: false
-  - name: arm_environment
-    env: ARM_ENVIRONMENT
-    type: string
-    default: "public"
   - name: os_image
     type: string
-    default: "Ubuntu 18.04 Data Science VM"
+    default: "Windows 20"
   - name: vm_size
     type: string
     default: "2 CPU | 8GB RAM"
@@ -99,6 +100,8 @@ parameters:
   - name: shared_storage_name
     type: string
     default: "vm-shared-storage"
+  - name: arm_environment
+    type: string
 
 outputs:
   - name: ip
@@ -124,13 +127,13 @@ outputs:
 mixins:
   - exec
   - terraform:
-      clientVersion: 1.3.6
+      clientVersion: 1.4.6
   - az:
       clientVersion: 2.37.0
 
 install:
   - terraform:
-      description: "Deploy Guacamole User Resource Service (Linux VM)"
+      description: "Deploy Guacamole User Resource Service (Windows VM)"
       vars:
         workspace_id: ${ bundle.parameters.workspace_id }
         tre_id: ${ bundle.parameters.tre_id }
@@ -154,7 +157,7 @@ install:
 
 upgrade:
   - terraform:
-      description: "Update Guacamole User Resource Service (Linux VM)"
+      description: "Update Guacamole User Resource Service (Windows VM)"
       vars:
         workspace_id: ${ bundle.parameters.workspace_id }
         tre_id: ${ bundle.parameters.tre_id }
@@ -242,7 +245,7 @@ stop:
   - terraform:
       arguments:
         - "output"
-      description: "Get VM resource_id from Terraform outputs"
+      description: "Get VM hostname and rg from Terraform outputs"
       backendConfig:
         resource_group_name: ${ bundle.parameters.tfstate_resource_group_name }
         storage_account_name: ${ bundle.parameters.tfstate_storage_account_name }

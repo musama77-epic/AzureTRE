@@ -291,6 +291,10 @@ user_resource_bundle:
 	$(MAKE) bundle-build bundle-publish bundle-register \
 	DIR="${MAKEFILE_DIR}/templates/workspace_services/${WORKSPACE_SERVICE}/user_resources/${BUNDLE}" BUNDLE_TYPE=user_resource WORKSPACE_SERVICE_NAME=tre-service-${WORKSPACE_SERVICE}
 
+user_resource_bundle_custom:
+	$(MAKE) bundle-build bundle-publish bundle-register \
+	DIR="${MAKEFILE_DIR}/templates/workspace_services/${WORKSPACE_SERVICE}/user_resources/${BUNDLE}" BUNDLE_TYPE=user_resource WORKSPACE_SERVICE_NAME=tre-service-${WORKSPACE_SERVICE}
+
 bundle-publish-register-all:
 	${MAKEFILE_DIR}/devops/scripts/publish_and_register_all_bundles.sh
 

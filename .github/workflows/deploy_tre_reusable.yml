@@ -404,6 +404,9 @@ jobs:
              BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-export-reviewvm"}
           - {BUNDLE_TYPE: "user_resource",
              BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-import-reviewvm"}
+          - {BUNDLE_TYPE: "user_resource",
+             BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm-gpu"}
+
     environment: ${{ inputs.environmentName }}
     steps:
       - name: Checkout
@@ -606,6 +609,9 @@ jobs:
              WORKSPACE_SERVICE_NAME: "tre-service-guacamole"}
           - {BUNDLE_TYPE: "user_resource",
              BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-import-reviewvm",
+             WORKSPACE_SERVICE_NAME: "tre-service-guacamole"}
+          - {BUNDLE_TYPE: "user_resource",
+             BUNDLE_DIR: "./templates/workspace_services/guacamole/user_resources/guacamole-azure-windowsvm-gpu",
              WORKSPACE_SERVICE_NAME: "tre-service-guacamole"}
     environment: ${{ inputs.environmentName }}
     steps:
